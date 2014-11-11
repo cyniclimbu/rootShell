@@ -11,7 +11,7 @@ Some gems might not be supported by your compiler version or not installed.
 =end
 
 #Declaring some variables that's needed in multiple files/methods.
-MAIN_DIR = "root"
+MAIN_DIR = "rootShell"
 $current_attempt = 0
 
 
