@@ -1,13 +1,10 @@
 rootShell
 =========
 
-I need ruby's newbies to come join me build this project. Come, Discuss and help build. 
+All gems belongs respectively to their owners.
 
-The aim of this project is to create a cmd-like program. It's not for commercial purpose or anything. Just for fun.
-
-A guy alone cannot pull cmd-like stuff off. So I need you! To be a part of this corny project.
-
-As I start to develop the files one at a time I'll put notes on this readme.
+The aim for this project is to have fun & learn,
+You can join too. 
 
 Email - cyniclimbu@gmail.com
 
