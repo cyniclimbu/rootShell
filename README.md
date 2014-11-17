@@ -1,7 +1,7 @@
 rootShell
 =========
 
-All gems used in this project belongs respectively to their owners.
+All gems used in this project belongs their respective owners.
 =========
 As of 17 Nov, everything planned for this project has changed. So I'll replace all the codes ASAP!
 
