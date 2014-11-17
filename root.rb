@@ -9,6 +9,6 @@ include HighLine::SystemExtensions
 #WRITTEN ON NOTEPAD++
 #Dev - SeeWhyAnEyeSee
 
-rootShell = "rootShell"
+RootShell = "rootShell"
 ERRORMSG = " An unknown error occured.\nPlease send an email to cyniclimbu@gmail.com\nDescribing what caused it."
 TRYAGAIN = " Please restart the shell to try again."
