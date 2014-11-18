@@ -5,8 +5,8 @@ require 'win32ole'
 include HighLine::SystemExtensions
 
 RootShell = "rootShell"
-ERRORMSG = " An unknown error occured.\n Please send an email to cyniclimbu@gmail.com\n Describing what caused it.".cyan
-OUTTAATTEMPTS = "OUT OF ATTEMPTS\n   Restart the shell to try again.".white_on_black
+ERRORMSG = " An unknown error occured.\n Please send an email to cyniclimbu@gmail.com\n Describing what caused it.".bold.cyan
+OUTTAATTEMPTS = "OUT OF ATTEMPTS\n   Restart the shell to try again.".bold.white
 
 
 #--------------------METHOD--------------------# 001
@@ -50,8 +50,8 @@ batch.puts ")"
 batch.puts "@echo ON"
 batch.close
 
-puts " Done!"; puts " Go to desktop, right-click on the batch file "
-puts '                and click "Run as administrator"'
+puts " Done!".bold.white; puts " Go to desktop, right-click on the batch file ".bold.green
+puts '                and click "Run as administrator"'.bold.green
 
 
 
