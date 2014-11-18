@@ -1,52 +1,49 @@
-puts "                        L O A D I N G\n"
 require 'colored'
-#Compiler version - ruby 2.0.0p576 (2014-09-19) [i386-mingw32]
-#WRITTEN ON NOTEPAD++
-#Dev - SeeWhyAnEyeSee
-=begin
-This ruby file has the installer method that will help install files for the shell.
-This is not the main shell. 
-The *00* & *01*'s you see are the tag number that can help identify stuff when debugging.
-Some gems might not be supported by your compiler version or not installed.
-=end
+require 'highline'
+require 'win32ole'
 
-#Declaring some variables that's needed in multiple files/methods.
-MAIN_DIR = "root"
-$current_attempt = 0
+include HighLine::SystemExtensions
 
+RootShell = "rootShell"
+ERRORMSG = " An unknown error occured.\n Please send an email to cyniclimbu@gmail.com\n Describing what caused it.".cyan
+OUTTAATTEMPTS = "OUT OF ATTEMPTS\n   Restart the shell to try again.".white_on_black
 
-def installer #INITIALIZE INSTALLER *00*
+def install #INSTALL B01
+#------------------------------------------------
+puts " INSTALL".bold.blue
+puts " 1 - Default.".bold.green
+puts "     Install on desktop.".bold.green
+puts " 2 - Custom.".bold.green
+puts "     Install on custom directory.".bold.yellow
+puts " ----------------------------".bold.cyan
+puts " It's NEAT & CLEAN either way.".bold.white 
 
+loop = 0; while loop < 7 #WHILE LOOP B02
+#------------------------------------------------
+print " > "
+b01_loop = get_character.chr
 
-if $current_attempt == 6 #IF *01*
-
-puts "Maximum attempts reached!".bold.red
-puts "Exiting in 6 seconds.".bold.green
-puts "Start the shell again to try again.".bold.red
-sleep 6; exit
-
-else #ELSE *01*
-$current_attempt += 1
-
-
-if Dir.exists?(MAIN_DIR) #IF *02*
-
-Dir.chdir MAIN_DIR #CHECK IF MAIN_DIR EXISTS
-
-else #ELSE *02*
+if b01_loop == "1" #IF B03
+puts "do default_install" #def default_install ... end
+#------------------------------------------------
+elsif b01_loop == "2"
+puts "do custom_install" #def custom_install ... end
+#------------------------------------------------
 
 
 
+elsif loop == 6
+puts OUTTAATTEMPTS
+sleep 5; exit
+else # ELSE B03
+puts "Given character is out of options.".red_on_black
+end  # ELSE B03
+#------------------------------------------------
+loop += 1
+end #END B02
+#------------------------------------------------
+end #END B01
 
-end #END *02*
 
-
-
-end  #END *01*
-
-
-
-end #END OF INSTALLER *00*
-#-------------------------------------
-installer
+install
 sleep
