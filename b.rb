@@ -9,6 +9,7 @@ exit if defined?(Ocra)
 RootShell = "rootShell"
 ERRORMSG = " An unknown error occured.\n Please send an email to cyniclimbu@gmail.com\n Describing what caused it.".bold.cyan
 OUTTAATTEMPTS = "OUT OF ATTEMPTS\n   Restart the shell to try again.".bold.white
+timer = [0.1, 0.1, 0.1, 0.2, 0.1, 1, 0.4]
 
 
 #--------------------METHOD--------------------# 001 COMPLETED!
