@@ -1,18 +1,24 @@
 require 'colored'
 require 'highline'
 require 'win32ole'
-
+require 'benchmark'
 include HighLine::SystemExtensions
+
+=begin
+I still don't know how to thread a ruby program so the animation on default_install is 
+kind of stupid but hey...it works! lol :p
+=end
 
 exit if defined?(Ocra)
 
 RootShell = "rootShell"
-ERRORMSG = " An unknown error occured.\n Please send an email to cyniclimbu@gmail.com\n Describing what caused it.".bold.cyan
-OUTTAATTEMPTS = "OUT OF ATTEMPTS\n   Restart the shell to try again.".bold.white
+ERRORMSG = " An unknown error occured.\n Please send an email to cyniclimbu@gmail.com\n Describing what caused it.".cyan
+OUTTAATTEMPTS = "OUT OF ATTEMPTS\n   Restart the shell to try again.".white_on_black
+TIMER = [0.00001,0.00001,0.01,0.001,0,0.0001,0.1,0.1,0.0001,0.0001,0.01,0.0000001]
+PERCENTAGE = (1..100)
 
-
-#--------------------METHOD--------------------# 001 COMPLETED!
-def run_rootShell_as_admin
+#--------------------METHOD--------------------# 001 COMPLETED! batch_file_to_admin
+def batch_file_to_admin
 puts "Making a shell for you :]".bold.green
 
 Dir.chdir ENV['HOME'] + '/desktop'
@@ -24,10 +30,8 @@ batch.puts "@echo OFF"
 batch.puts "cd #{dir}"
 batch.puts "NET SESSION >nul 2>&1"
 batch.puts "IF %ERRORLEVEL% EQU 0 ("
-batch.puts "    ECHO Administrator PRIVILEGES Detected!"
-batch.puts "    echo Starting rootShell as admin!"
+batch.puts "    ECHO Starting rootShell as admin!"
 batch.puts "    ruby #{shell}"
-batch.puts "    ####"
 batch.puts "    PAUSE"
 batch.puts ") ELSE ("
 batch.puts "   echo ######## ########  ########   #######  ########  "
@@ -43,8 +47,7 @@ batch.puts "   echo ####### ERROR: ADMINISTRATOR PRIVILEGES REQUIRED #########"
 batch.puts "   echo This script must be run as administrator to work   "
 batch.puts '   echo Right click on my file icon and select "Run As Administrator".'
 batch.puts "   echo ##########################################################"
-batch.puts "   echo Made by : https://stackoverflow.com/users/67268/blak3r"
-batch.puts "   echo Thanks man!"
+batch.puts "   echo Original version by : https://stackoverflow.com/users/67268/blak3r"
 batch.puts "   echo."
 batch.puts "   PAUSE"
 batch.puts "   EXIT /B 1"
@@ -52,17 +55,109 @@ batch.puts ")"
 batch.puts "@echo ON"
 batch.close
 
-puts " Done!".bold.white; puts " Go to desktop, right-click on the batch file ".bold.green
-puts '                and click "Run as administrator"'.bold.green
+puts " Done!"; puts " Go to desktop, right-click on the batch file "
+puts '                and click "Run as administrator"'
 
-
+sleep 4; exit
 
 end
-#--------------------METHOD--------------------# 001
+#--------------------METHOD--------------------# 001 END batch_file_to_admin
 
-#--------------------#----#--------------------#
+=begin
+########################################## B O R D E R ##########################################
+=end
 
-#--------------------METHOD--------------------# 002 NOT COMPLETED
+#--------------------METHOD--------------------# 002 COMPLETED! default_install 
+def default_install #DEFAULT_INSTALL C01
+time_taken = Benchmark.realtime do #C03
+puts " Installing.\n".bold.green
+#-------------------------------------------------------------
+puts "  Setting variables.".bold.white
+$install_path = ENV['home'] + '/desktop'
+main_dir = $install_path + '\rootshell'
+str_path = "Desktop"
+
+#-------------------------------------------------------------
+PERCENTAGE.each do |x|
+print "\r  #{x}%".bold.white
+sleep 0.0000103
+end
+#-------------------------------------------------------------
+
+puts "\n  Done!".bold.white
+#-----------------------
+Dir.chdir $install_path
+#-----------------------
+puts "   Checking for previous installation on this directory.".bold.yellow
+if Dir.exists?(RootShell) #C02
+system("rmdir /Q /S rootShell")
+end #C02
+
+#-------------------------------------------------------------
+PERCENTAGE.each do |x|
+print "\r   #{x}%".bold.yellow
+sleep 0.0001
+end
+#-------------------------------------------------------------
+
+puts "\n   Done!".bold.yellow
+#-------------------------------------------------------------
+puts "    Checking drive name.".bold.blue
+path = Dir.pwd 
+drive_regex = /^[(a-z)]:/i #REGEX TO GET FRIST LETTER WITH COLON ':'
+						   #IGNOREs CASE
+$drive = drive_regex.match(path).to_s #SAVE REGEX MATCH AS STRING
+
+#-------------------------------------------------------------
+PERCENTAGE.each do |x|
+print "\r   #{x}%".bold.blue
+sleep TIMER.shuffle.pop
+end
+#-------------------------------------------------------------
+
+puts "\n    Done!".bold.blue
+#-------------------------------------------------------------
+puts "     Creating directories on #{str_path}.".bold.cyan
+Dir.mkdir(RootShell)
+Dir.chdir main_dir
+#--------------------------------------------------------
+readme = File.new("readme.txt","w")
+readme.puts("This folder contains setting configurations.")
+readme.puts("Do not edit the setting values unless you know what you're doing.\n\n")
+readme.puts("Thanks for downloading rootShell!")
+readme.puts("My email - cyniclimbu@gmail.com")
+readme.close
+#--------------------------------------------------------
+Dir.mkdir("user")
+Dir.chdir("user")
+Dir.mkdir("settings")
+#HIDE SETTINGS DIR OT NOT?
+Dir.chdir("settings") 
+drive = File.new("drive","w")
+drive.print($drive); drive.close
+
+#-------------------------------------------------------------
+PERCENTAGE.each do |x|
+print "\r     #{x}%".bold.cyan
+sleep TIMER.shuffle.pop
+end
+#-------------------------------------------------------------
+
+puts "\n     Done!".bold.cyan
+#-------------------------------------------------------------
+puts " Finished installing!".bold.green
+end #END C03
+puts " Time taken to install #{time_taken} seconds."
+puts " Restart the shell to start using RootShell!"
+sleep 4; exit
+end #END C01
+#--------------------METHOD--------------------# 002 END default_install
+
+=begin
+########################################## B O R D E R ##########################################
+=end
+
+#--------------------METHOD--------------------# 004 NOT COMPLETED
 def install #INSTALL B01
 #------------------------------------------------
 puts " INSTALL".bold.blue
@@ -80,7 +175,7 @@ b01_loop = get_character.chr
 
 if b01_loop == "1" #IF B03
 #------------------------------------------------xxxxxx
-puts "do default_install" #def default_install ... end
+default_install
 #------------------------------------------------xxxxxx
 elsif b01_loop == "2"
 #------------------------------------------------xxxxxx
@@ -99,8 +194,11 @@ end #END B02
 end #END B01
 #--------------------METHOD--------------------# 002
 
+=begin
+########################################## B O R D E R ##########################################
+=end
 
-
+#--------------------METHOD--------------------# 003
 def admin? #ADMIN? D01
 #--------------------------------------------------------
 #DEFINE VARIABLES BEFOREHAND!
@@ -138,7 +236,7 @@ choice = get_character.chr
 if choice == 'y' or choice == 'Y' # IF D0312
 #------------------------------------------------
 
-puts "run_rootShell_as_admin" # M E T H O D
+batch_file_to_admin # M E T H O D
 
 #------------------------------------------------
 elsif choice == 'n' or choice == 'N' # ELSIF D0312
@@ -184,7 +282,7 @@ puts " Possible reason for this error: ".bold.green
 puts " 1.The original name of this file was changed!"
 puts "    Revert the name if you changed it before."
 puts " 2.The extension was changed from .rb to .RB or from .exe to .EXE"
-puts "   Revert the extension name if you changed it before."
+puts "    Revert the extension name if you changed it before."
 sleep 4; exit
 #------------------------------------------------
 elsif choice == 'e' or choice == 'E' # ELSIF D04
@@ -212,10 +310,8 @@ end # END D03
 else # ELSE D02
 puts ERRORMSG
 end # END D02
-
-
-
 end  #END D01
+#--------------------METHOD--------------------# 003
 
 admin?
 sleep
