@@ -5,8 +5,8 @@ require 'benchmark'
 include HighLine::SystemExtensions
 
 =begin
-I still don't know how to thread a ruby program so the animation on default_install is 
-kind of stupid but hey...it works! lol :p
+I still don't know how to thread a ruby program so the animation on some methods are 
+kind of useless but hey...it works! lol :p
 =end
 
 exit if defined?(Ocra)
