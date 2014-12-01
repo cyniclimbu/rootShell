@@ -5,7 +5,7 @@ require 'benchmark'
 include HighLine::SystemExtensions
 
 =begin
-I still don't know how to thread a ruby program so the animation on some methods are 
+I still don't know how to thread a ruby program so the animation on methods are
 kind of useless but hey...it works! lol :p
 =end
 
@@ -14,7 +14,7 @@ exit if defined?(Ocra)
 RootShell = "rootShell"
 ERRORMSG = " An unknown error occured.\n Please send an email to cyniclimbu@gmail.com\n Describing what caused it.".cyan
 OUTTAATTEMPTS = "OUT OF ATTEMPTS\n   Restart the shell to try again.".bold.red
-TIMER = [0.00001,0.00001,0.01,0.002,0,0.0001,0.1,0.1,0.0002,0.0001,0.01,0.0000001]
+TIMER = [0.0001,0.01,0.002,0,0.0001,0.1,0.1,0.0002,0.0001,0.01,0.0000001]
 PERCENTAGE = (1..100)
 
 #--------------------METHOD--------------------# 001 COMPLETED! batch_file_to_admin
@@ -87,8 +87,8 @@ Dir.chdir $install_path
 puts "   Checking for previous installation on this directory.".bold.yellow
 if Dir.exists?(RootShell) #C02
 rmvdir = system("rmdir /Q /S rootShell")
-
-if not rmvdir == true #IF C0201
+sleep 0.5
+if rmvdir != true or Dir.exists?(RootShell) #IF C0201
 puts " Sorry an error occurred.".bold.red
 puts " Detected that rootShell system directory exists.".bold.white
 puts "          but unfortunately an error occurred when".bold.white
@@ -96,12 +96,14 @@ puts "          it tried to delete the directory.".bold.white
 puts " MORE TO IT.".bold.green
 puts " To fix the problem, please delete the folder manually.".bold.yellow
 puts " Maybe it's a bug? If it is send me an email : cyniclimbu@gmail.com".bold.yellow 
+puts "\n Installation failed and was aborted.".bold.cyan
+sleep 4; exit
 end #END C0201
 end #END C02
 
 PERCENTAGE.each do |x| #ANIM02
 print "\r   #{x}%".bold.yellow
-sleep TIMER[5]
+sleep TIMER[10]
 end #END ANIM02
 puts "\n   Done!".bold.yellow
 #-------------------------------------------------------------
@@ -110,6 +112,7 @@ path = Dir.pwd
 drive_regex = /^[(a-z)]:/i #REGEX TO GET FRIST LETTER WITH COLON ':'
 						   #IGNOREs CASE
 $drive = drive_regex.match(path).to_s #SAVE REGEX MATCH AS STRING
+windows = $drive + '\windows'
 
 PERCENTAGE.each do |x| #ANIM03
 print "\r    #{x}%".bold.blue
@@ -136,6 +139,36 @@ Dir.mkdir("settings")
 Dir.chdir("settings") 
 drive = File.new("drive","w")
 drive.print($drive); drive.close
+
+
+if Dir.exists?(windows) #IF E01
+Dir.chdir windows
+
+if Dir.exists?("seewhyaneyesee") #IF E02
+Dir.chdir "seewhyaneyesee"
+paths = File.new("path","w")
+paths.puts(main_dir)
+paths.puts($install_path)
+paths.close
+
+elsif not Dir.exists?("seewhyaneyesee")
+Dir.mkdir("seewhyaneyesee")
+Dir.chdir "seewhyaneyesee"
+paths = File.new("path","w")
+paths.puts(main_dir)
+paths.puts($install_path)
+paths.close
+
+end #END E02
+
+
+else #ELSE E01
+print " Error, could not find ".bold.red; puts "#{windows}".bold.white
+puts " This won't cause rootShell to stop working.".bold.cyan
+puts " You will have two choices.".bold.green
+puts " 1. To put the shell and it's system folder in the same directory.".bold.yellow
+puts " 2. Type the system folder's path onto the shell every time it loads.\n".bold.yellow
+end #END E01
 
 PERCENTAGE.each do |x| #ANIM04
 print "\r     #{x}%".bold.cyan
@@ -183,9 +216,9 @@ time_taken = Benchmark.realtime do #C03
 puts " Installing.\n".bold.green
 #-------------------------------------------------------------
 puts "  Setting variables.".bold.white
-$install_path = custom_dir
+$install_path = ENV['home'] + '/desktop'
 main_dir = $install_path + '\rootshell'
-str_path = File.basename $install_path
+str_path = "Desktop"
 
 PERCENTAGE.each do |x| #ANIM01
 print "\r  #{x}%".bold.white
@@ -197,8 +230,8 @@ Dir.chdir $install_path
 puts "   Checking for previous installation on this directory.".bold.yellow
 if Dir.exists?(RootShell) #C02
 rmvdir = system("rmdir /Q /S rootShell")
-
-if not rmvdir == true #IF C0201
+sleep 0.5
+if rmvdir != true or Dir.exists?(RootShell) #IF C0201
 puts " Sorry an error occurred.".bold.red
 puts " Detected that rootShell system directory exists.".bold.white
 puts "          but unfortunately an error occurred when".bold.white
@@ -206,12 +239,14 @@ puts "          it tried to delete the directory.".bold.white
 puts " MORE TO IT.".bold.green
 puts " To fix the problem, please delete the folder manually.".bold.yellow
 puts " Maybe it's a bug? If it is send me an email : cyniclimbu@gmail.com".bold.yellow 
+puts "\n Installation failed and was aborted.".bold.cyan
+sleep 4; exit
 end #END C0201
 end #END C02
 
 PERCENTAGE.each do |x| #ANIM02
 print "\r   #{x}%".bold.yellow
-sleep TIMER[5]
+sleep TIMER[10]
 end #END ANIM02
 puts "\n   Done!".bold.yellow
 #-------------------------------------------------------------
@@ -220,6 +255,7 @@ path = Dir.pwd
 drive_regex = /^[(a-z)]:/i #REGEX TO GET FRIST LETTER WITH COLON ':'
 						   #IGNOREs CASE
 $drive = drive_regex.match(path).to_s #SAVE REGEX MATCH AS STRING
+windows = $drive + '\windows'
 
 PERCENTAGE.each do |x| #ANIM03
 print "\r    #{x}%".bold.blue
@@ -246,6 +282,36 @@ Dir.mkdir("settings")
 Dir.chdir("settings") 
 drive = File.new("drive","w")
 drive.print($drive); drive.close
+
+
+if Dir.exists?(windows) #IF E01
+Dir.chdir windows
+
+if Dir.exists?("seewhyaneyesee") #IF E02
+Dir.chdir "seewhyaneyesee"
+paths = File.new("path","w")
+paths.puts(main_dir)
+paths.puts($install_path)
+paths.close
+
+elsif not Dir.exists?("seewhyaneyesee")
+Dir.mkdir("seewhyaneyesee")
+Dir.chdir "seewhyaneyesee"
+paths = File.new("path","w")
+paths.puts(main_dir)
+paths.puts($install_path)
+paths.close
+
+end #END E02
+
+
+else #ELSE E01
+print " Error, could not find ".bold.red; puts "#{windows}".bold.white
+puts " This won't cause rootShell to stop working.".bold.cyan
+puts " You will have two choices.".bold.green
+puts " 1. To put the shell and it's system folder in the same directory.".bold.yellow
+puts " 2. Type the system folder's path onto the shell every time it loads.\n".bold.yellow
+end #END E01
 
 PERCENTAGE.each do |x| #ANIM04
 print "\r     #{x}%".bold.cyan
@@ -318,7 +384,7 @@ def admin? #ADMIN? D01
 #--------------------------------------------------------
 #DEFINE VARIABLES BEFOREHAND!
 reg_key  = 'reg query "HKU\S-1-5-19"'
-is_admin = true #system(reg_key) We don't need admin permission for anything right now.
+is_admin = system(reg_key)
 
 self_name = File.basename $0,".rb" 
 self_exe  = self_name + ".exe"
@@ -380,7 +446,7 @@ puts " Shell isn't running as administrator.".bold.red
 puts " Execute this shell as administrator.".bold.red
 sleep 5; exit
 #------------------------------------------------
-else # ELSE D03 #brtvnckdrtbnvjcs
+else # ELSE D03
 puts " ERROR, NO FILE WITH '#{self_name}' NAME WAS FOUND.".bold.red
 puts " ERROR CODE - A0".bold.red
 puts " Try restarting.\n".bold.white
