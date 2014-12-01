@@ -13,8 +13,8 @@ exit if defined?(Ocra)
 
 RootShell = "rootShell"
 ERRORMSG = " An unknown error occured.\n Please send an email to cyniclimbu@gmail.com\n Describing what caused it.".cyan
-OUTTAATTEMPTS = "OUT OF ATTEMPTS\n   Restart the shell to try again.".white_on_black
-TIMER = [0.00001,0.00001,0.01,0.001,0,0.0001,0.1,0.1,0.0001,0.0001,0.01,0.0000001]
+OUTTAATTEMPTS = "OUT OF ATTEMPTS\n   Restart the shell to try again.".bold.red
+TIMER = [0.00001,0.00001,0.01,0.002,0,0.0001,0.1,0.1,0.0002,0.0001,0.01,0.0000001]
 PERCENTAGE = (1..100)
 
 #--------------------METHOD--------------------# 001 COMPLETED! batch_file_to_admin
@@ -77,57 +77,58 @@ $install_path = ENV['home'] + '/desktop'
 main_dir = $install_path + '\rootshell'
 str_path = "Desktop"
 
-#-------------------------------------------------------------
-PERCENTAGE.each do |x|
+PERCENTAGE.each do |x| #ANIM01
 print "\r  #{x}%".bold.white
-sleep 0.0000103
-end
-#-------------------------------------------------------------
-
+sleep TIMER[0]
+end #END ANIM01
 puts "\n  Done!".bold.white
-#-----------------------
+#-------------------------------------------------------------
 Dir.chdir $install_path
-#-----------------------
 puts "   Checking for previous installation on this directory.".bold.yellow
 if Dir.exists?(RootShell) #C02
-system("rmdir /Q /S rootShell")
-end #C02
+rmvdir = system("rmdir /Q /S rootShell")
 
-#-------------------------------------------------------------
-PERCENTAGE.each do |x|
+if not rmvdir == true #IF C0201
+puts " Sorry an error occurred.".bold.red
+puts " Detected that rootShell system directory exists.".bold.white
+puts "          but unfortunately an error occurred when".bold.white
+puts "          it tried to delete the directory.".bold.white
+puts " MORE TO IT.".bold.green
+puts " To fix the problem, please delete the folder manually.".bold.yellow
+puts " Maybe it's a bug? If it is send me an email : cyniclimbu@gmail.com".bold.yellow 
+end #END C0201
+end #END C02
+
+PERCENTAGE.each do |x| #ANIM02
 print "\r   #{x}%".bold.yellow
-sleep 0.0001
-end
-#-------------------------------------------------------------
-
+sleep TIMER[5]
+end #END ANIM02
 puts "\n   Done!".bold.yellow
 #-------------------------------------------------------------
-puts "    Checking drive name.".bold.blue
+puts "    Checking drive".bold.blue
 path = Dir.pwd 
 drive_regex = /^[(a-z)]:/i #REGEX TO GET FRIST LETTER WITH COLON ':'
 						   #IGNOREs CASE
 $drive = drive_regex.match(path).to_s #SAVE REGEX MATCH AS STRING
 
-#-------------------------------------------------------------
-PERCENTAGE.each do |x|
-print "\r   #{x}%".bold.blue
+PERCENTAGE.each do |x| #ANIM03
+print "\r    #{x}%".bold.blue
 sleep TIMER.shuffle.pop
-end
-#-------------------------------------------------------------
+end #END ANIM03
 
 puts "\n    Done!".bold.blue
 #-------------------------------------------------------------
 puts "     Creating directories on #{str_path}.".bold.cyan
 Dir.mkdir(RootShell)
-Dir.chdir main_dir
-#--------------------------------------------------------
+Dir.chdir RootShell
+
 readme = File.new("readme.txt","w")
 readme.puts("This folder contains setting configurations.")
 readme.puts("Do not edit the setting values unless you know what you're doing.\n\n")
 readme.puts("Thanks for downloading rootShell!")
 readme.puts("My email - cyniclimbu@gmail.com")
 readme.close
-#--------------------------------------------------------
+
 Dir.mkdir("user")
 Dir.chdir("user")
 Dir.mkdir("settings")
@@ -136,12 +137,10 @@ Dir.chdir("settings")
 drive = File.new("drive","w")
 drive.print($drive); drive.close
 
-#-------------------------------------------------------------
-PERCENTAGE.each do |x|
+PERCENTAGE.each do |x| #ANIM04
 print "\r     #{x}%".bold.cyan
 sleep TIMER.shuffle.pop
-end
-#-------------------------------------------------------------
+end #END ANIM04
 
 puts "\n     Done!".bold.cyan
 #-------------------------------------------------------------
@@ -157,12 +156,128 @@ end #END C01
 ########################################## B O R D E R ##########################################
 =end
 
+#--------------------METHOD--------------------# 003 COMPLETED! custom_install 
+def custom_install #CUSTOM_INSTALL D01
+loop = 0; while loop < 5 #WHILE LOOP D02
+puts " Enter desired destination for installation.".bold.green
+print " > "
+custom_dir = gets.chomp
+
+if custom_dir == "" #IF D03
+print " Type something!\n".bold.red
+#--------------------------------------------------------
+elsif File.file?(custom_dir)
+print " #{custom_dir}".bold.white; puts " is not a valid directory.".bold.red
+puts " HINT: It's a file god dammit.".bold.cyan
+#--------------------------------------------------------
+elsif not Dir.exists?(custom_dir) #ELSIF D03
+puts " The given directory does not exist.".bold.red
+print " #{custom_dir}".bold.green; puts " not found.".bold.red
+#--------------------------------------------------------
+elsif Dir.exists?(custom_dir) #ELSIF D03
+=begin
+I literally copied & pasted the codes from below here till D03 from default_install
+So all the tags on codes you see is also the same as the one on default_install.
+=end
+time_taken = Benchmark.realtime do #C03
+puts " Installing.\n".bold.green
+#-------------------------------------------------------------
+puts "  Setting variables.".bold.white
+$install_path = custom_dir
+main_dir = $install_path + '\rootshell'
+str_path = File.basename $install_path
+
+PERCENTAGE.each do |x| #ANIM01
+print "\r  #{x}%".bold.white
+sleep TIMER[0]
+end #END ANIM01
+puts "\n  Done!".bold.white
+#-------------------------------------------------------------
+Dir.chdir $install_path
+puts "   Checking for previous installation on this directory.".bold.yellow
+if Dir.exists?(RootShell) #C02
+rmvdir = system("rmdir /Q /S rootShell")
+
+if not rmvdir == true #IF C0201
+puts " Sorry an error occurred.".bold.red
+puts " Detected that rootShell system directory exists.".bold.white
+puts "          but unfortunately an error occurred when".bold.white
+puts "          it tried to delete the directory.".bold.white
+puts " MORE TO IT.".bold.green
+puts " To fix the problem, please delete the folder manually.".bold.yellow
+puts " Maybe it's a bug? If it is send me an email : cyniclimbu@gmail.com".bold.yellow 
+end #END C0201
+end #END C02
+
+PERCENTAGE.each do |x| #ANIM02
+print "\r   #{x}%".bold.yellow
+sleep TIMER[5]
+end #END ANIM02
+puts "\n   Done!".bold.yellow
+#-------------------------------------------------------------
+puts "    Checking drive".bold.blue
+path = Dir.pwd 
+drive_regex = /^[(a-z)]:/i #REGEX TO GET FRIST LETTER WITH COLON ':'
+						   #IGNOREs CASE
+$drive = drive_regex.match(path).to_s #SAVE REGEX MATCH AS STRING
+
+PERCENTAGE.each do |x| #ANIM03
+print "\r    #{x}%".bold.blue
+sleep TIMER.shuffle.pop
+end #END ANIM03
+
+puts "\n    Done!".bold.blue
+#-------------------------------------------------------------
+puts "     Creating directories on #{str_path}.".bold.cyan
+Dir.mkdir(RootShell)
+Dir.chdir RootShell
+
+readme = File.new("readme.txt","w")
+readme.puts("This folder contains setting configurations.")
+readme.puts("Do not edit the setting values unless you know what you're doing.\n\n")
+readme.puts("Thanks for downloading rootShell!")
+readme.puts("My email - cyniclimbu@gmail.com")
+readme.close
+
+Dir.mkdir("user")
+Dir.chdir("user")
+Dir.mkdir("settings")
+#HIDE SETTINGS DIR OT NOT?
+Dir.chdir("settings") 
+drive = File.new("drive","w")
+drive.print($drive); drive.close
+
+PERCENTAGE.each do |x| #ANIM04
+print "\r     #{x}%".bold.cyan
+sleep TIMER.shuffle.pop
+end #END ANIM04
+
+puts "\n     Done!".bold.cyan
+#-------------------------------------------------------------
+puts " Finished installing!".bold.green
+end #END C03
+puts " Time taken to install #{time_taken} seconds."
+puts " Restart the shell to start using RootShell!"
+sleep 4; exit
+#--------------------------------------------------------
+end #END D03
+
+loop += 1
+end #WHILE LOOP END D02
+puts " OUT OF ATTEMPTS\n Restart the shell to try again.".bold.red
+end #END D01
+#--------------------METHOD--------------------# 003 END custom_install 
+
+=begin
+########################################## B O R D E R ##########################################
+=end
+
 #--------------------METHOD--------------------# 004 NOT COMPLETED
 def install #INSTALL B01
 #------------------------------------------------
 puts " INSTALL".bold.blue
 puts " 1 - Default.".bold.green
-puts "     Install on desktop.".bold.green
+puts "     Install on desktop.".bold.yellow
 puts " 2 - Custom.".bold.green
 puts "     Install on custom directory.".bold.yellow
 puts " ----------------------------".bold.cyan
@@ -174,18 +289,18 @@ print " > "
 b01_loop = get_character.chr
 
 if b01_loop == "1" #IF B03
-#------------------------------------------------xxxxxx
+print "1\n".bold.white
 default_install
 #------------------------------------------------xxxxxx
-elsif b01_loop == "2"
+elsif b01_loop == "2" #ELSIF B03
+print "2\n".bold.white
+custom_install
 #------------------------------------------------xxxxxx
-puts "do custom_install" #def custom_install ... end
-#------------------------------------------------xxxxxx
-elsif loop == 6
+elsif loop == 6 #ELSIF B03
 puts OUTTAATTEMPTS
 sleep 5; exit
 else # ELSE B03
-puts "Given character is out of options.".red_on_black
+puts "Given character is out of options.".bold.red
 end  # ELSE B03
 #------------------------------------------------
 loop += 1
@@ -203,7 +318,7 @@ def admin? #ADMIN? D01
 #--------------------------------------------------------
 #DEFINE VARIABLES BEFOREHAND!
 reg_key  = 'reg query "HKU\S-1-5-19"'
-is_admin = system(reg_key)
+is_admin = true #system(reg_key) We don't need admin permission for anything right now.
 
 self_name = File.basename $0,".rb" 
 self_exe  = self_name + ".exe"
@@ -247,7 +362,7 @@ sleep 0.1
 end
 sleep 1; exit
 #------------------------------------------------
-elsif loop == 6
+elsif loop == 6 # ELSIF D0312
 puts OUTTAATTEMPTS
 sleep 4; exit
 #------------------------------------------------
