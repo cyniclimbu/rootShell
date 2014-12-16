@@ -3,7 +3,7 @@ rootShell
 All gems used in this project belongs to their respective owners.
 =========
 The aim for this project is nothing.
-The process is all about research and put together the research together. I did learn some few things and I still am.
+The process is all about research and put the research together. I did learn some few things and I still am.
 
 As of 17 Nov, everything planned for this project has changed. So I'll replace all the codes ASAP!
 
