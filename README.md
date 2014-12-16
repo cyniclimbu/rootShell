@@ -1,14 +1,19 @@
 rootShell
 =========
-
-All gems used in this project belongs their respective owners.
+All gems used in this project belongs to their respective owners.
 =========
+The aim for this project is nothing.
+The process is all about research and put together the research together. I did learn some few things and I still am.
+
 As of 17 Nov, everything planned for this project has changed. So I'll replace all the codes ASAP!
 
-Everything is under development currently.
-As each file is completed names will be assigned to them.
-Except for root.rb, it will be the main shell. Those "a,b,c" will be named.
+December 16
+Installation method is completed.
+All there is left is command_structure.rb
+Which will contain commands similar to windows command prompt.
 
-Email - cyniclimbu@gmail.com
-
-No spam pls.
+I'm adding my own commands too. There are about 10-12 commands completed, once I have about 30 or so, I'll commit it to github.
+=========
+Who even bothers to read this anyway?
+I'm on my own.
+=========
