@@ -1,6 +1,6 @@
 rootShell
 =========
-All gems used in this project belongs to their respective owners. List.
+All gems used in this project belongs to their respective owners.
 =========
 Colored (1.2)            
 Highline (1.6.21)          
