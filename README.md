@@ -1,16 +1,16 @@
-rootShell
+What is rootShell?
 =========
-All gems used in this project belongs to their respective owners.
+rootShell is a program written completely in Ruby which is very similar to command prompt. 
+All you do is type commands. The difference is, there will be commands cmd does not have.
+
+What's happening currently?
 =========
-Colored (1.2)            
-Highline (1.6.21)          
-Win32ole            
-Benchmark             
-Qwikcrypt            
-Auto_click (Might use this one too...)              
+It's under development and I still have looong lines of codes to write :neckbeard:
+Brace yourself for stupidity.
 
-As of 17 Nov, everything planned for this project has changed. So I'll rewrite all the codes ASAP!
-
+More?
+=========
+I can't possibly write all the commands cmd has to offer so I'll just add commands that are within my knowledge in Ruby.
 
 Tell me something funny @ cyniclimbu@gmail.com
-==========
+
