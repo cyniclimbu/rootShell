@@ -27,9 +27,36 @@ Dir.chdir $prev_dir
 end # END OF METHOD check_files
 #=======================================================================#
 #=======================================================================#
+def check_custom_dir
+# NOT IN USE CURRENTLY
+	if not defined?($custom_dir)
+	 puts "Custom path is not defined.".bold.red; system("pause"); exit
+	 
+	elsif not defined?($CreateCustomDir) 
+	 puts "Create custom directory is not defined.".bold.red; system("pause"); exit
+	 
+	end
+	
+	if Dir.exists?($custom_dir)
+	 $customDirExists = true
+	 
+	elsif not Dir.exists?($custom_dir) and $CreateCustomDir == true
+	 $customDirExists = false
+	 Dir.mkdir($custom_dir)
+	 
+	elsif not Dir.exists?($custom_dir) and $CreateCustomDir == false
+	 $customDirExists = false 
+	 
+	else 
+	 puts SHELLERROR; system("pause"); exit
+	end
+
+end
+#=======================================================================#
+#=======================================================================#
 def admin? # CHECK IF CURRENT SHELL HAS ADMINISTRATOR PRIVILEGE
  reg_key   = 'reg query "HKU\S-1-5-19"'
- $is_admin = true # system(reg_key)
+ $is_admin = system(reg_key) # true if debugging required
  system("cls")
  
 if $is_admin == false
@@ -44,7 +71,7 @@ if $is_admin == false
 			print "> ".bold.white
 			choice = get_character.chr
 			
-				if 	  choice =~ /y/i
+				if choice =~ /y/i
 				 batch_file_to_admin ### CALL batch_file_to_admin ###
 				 
 				elsif choice =~ /n/i
@@ -108,7 +135,7 @@ batch.puts "@echo ON"
 batch.close
 
 puts " Done!"; puts " Go to desktop, right-click on the batch file "
-puts '                and click "Run as administrator"'
+puts %Q(                and click "Run as administrator")
 sleep 4; exit
 
 end
@@ -120,17 +147,12 @@ def what2do
 def locate_rootShell
 system("cls")
 
- if $is_admin == false # JUST IN CASE ;)
- puts " HOLD IT RIGHT THERE!".bold.cyan
- puts " You need to run rootShell as administrator to do this.".bold.cyan; system("pause"); exit
- end
-
 def find_rootShell #### THIS IS A METHOD INSIDE locate_rootShell ####
 
 	if Dir.exists?(ROOTSHELL) # I WON'T CHECK IF THE CONTENTS OF rootShell ARE IN PLACE OR NOT
 	 print "Writing new path to".bold.green; puts " #{WINDOWS + '\SeeWhyAnEyeSee'}\n".bold.cyan
 	 
-	 Dir.chdir ROOTSHELL; rootShell_contents = Dir.glob'*' ;installed_Path = Dir.pwd
+	 Dir.chdir ROOTSHELL; rootShell_contents = Dir.glob'*'; installed_Path = Dir.pwd
 	 Dir.chdir WINDOWS
 		if File.exists?(WINDOWS + '\SeeWhyAnEyeSee\path')
 		 Dir.chdir("SeeWhyAnEyeSee")
@@ -163,7 +185,7 @@ def find_rootShell #### THIS IS A METHOD INSIDE locate_rootShell ####
 		 found_rootShell = true
 		 
 		else
-		 SHELLERROR; sleep 10; exit
+		 SHELLERROR; system("pause"); exit
 		end
 		
 			if found_rootShell == true
@@ -188,7 +210,7 @@ end #### THIS IS A METHOD INSIDE locate_rootShell ####
 puts "LOCATE.".bold.blue
 puts "Where is rootShell located at?".bold.green
 
- loop = 0; while loop <= 8 # LOOP OF LOCATE
+ loop = 0; while loop <= 6 # LOOP OF LOCATE
 
   print "Path: ".bold.white; installed_Path = gets.chomp 
  
@@ -267,7 +289,7 @@ I have been researching on Ruby for almost a year now, the rest of it was spent 
 -about hacking and a couple of programming languages when I finally found Ruby and felt easy coding in it.\n
 This project wasn't really made so people could use it and be happy about it.
 I made this project to test my skills and you can see it's still not really good.
-Multiple failed projects and countless amount of days & codes were wasted for me to get here.\n
+Multiple failed projects and & lots of codes were wasted for me to get here.\n
 ####### About rootShell from below here :P #######
 rootShell is all about typing commands into the shell just like cmd and getting desired response back.
 Enjoy rootShell!\n
@@ -278,7 +300,8 @@ createReadme = File.new("readme.txt","w")
 createReadme.write(readme); createReadme.close
 
 puts "- Creating setting directory.".bold.yellow
-Dir.mkdir("setting")
+Dir.mkdir("setting"); Dir.chdir("setting")
+Dir.mkdir("path")
 
 puts "Writing path to #{WINDOWS + '\SeeWhyAnEyeSee'}"
 	

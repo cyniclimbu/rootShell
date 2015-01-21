@@ -2,7 +2,7 @@
 
 require 'colored'
 
-loadFiles = ["rootShellGemFile.rb", "main_methods.rb"] # commands.rb and commands_database should also be loaded later on.
+loadFiles = ["rootShellGemFile.rb", "main_methods.rb", "commands_structure.rb"] # Should ONLY load un-interactive scripts.
 $prev_dir = Dir.pwd # WE NEED TO GET BACK HERE AFTER WE FINISH LOADING REQUIRED FILES
 
 loadFiles.each do |load| # LOAD REQUIRED FILES
@@ -18,7 +18,7 @@ loadFiles.each do |load| # LOAD REQUIRED FILES
   end # END OF LOADING FILES
   
  print "Loading ".bold.green; puts "#{load}".bold.cyan
- require "./#{load}"  # Is this a bad idea?
+ require "./#{load}"  # How bad is this?
  puts "Done!".bold.white
  
 end 
@@ -31,6 +31,9 @@ if  $SYSSTATUS == true # TRUE MEANS SYSTEM DIRECTORY rootShell EXISTS
 
 puts "Finished loading all files!" # ROOTSHELL HAS FINISHED LOADING ALL IMPORTANT FILES AND IS GOOD TO GO!
 	# LOAD CMD-LIKE SHELL # CALL METHOD FROM commands.rb WHICH DOES NOT EXIST YET. It's in the works currently.
+	
+	system("cls")
+	require './commands.rb'
 	
 elsif $SYSSTATUS == false
 

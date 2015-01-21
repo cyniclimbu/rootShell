@@ -1,5 +1,6 @@
-# This script is part of rootShell and is not interactive.
-
+## This script is part of rootShell and is not interactive. ##
+## This script won't work as colored gem is not loaded in this file. ##
+# It will be loaded via rootShell.rb #
 require 'highline'
 require 'highline/import'
 require 'win32ole'
@@ -21,5 +22,4 @@ WINDOWS       = DRIVENAME + '\windows'
 =begin
  This file is a part of rootShell project.
  This file contains required gems and constants for rootShell to work. Without this file rootShell won't work at all.
- - SeeWhyAnEyeSee
 =end
