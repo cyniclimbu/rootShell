@@ -1,17 +1,18 @@
+#======================== DIRECTORY RELATED COMMANDS ========================#
 def cd
 
-current_directory = "Relative path -  #{Dir.pwd.gsub('/','\\')}   Absolute path - #{File.basename Dir.pwd}\n"
+current_directory = "Relative path - #{Dir.pwd.gsub('/','\\')} Absolute path - #{File.basename Dir.pwd}\n".bold.green
 
-	if current_directory.length > 74 #IF CD02
-	 puts "Relative path  - #{Dir.pwd}".bold.green
- 	 puts "Absolute path - #{File.basename Dir.pwd}".bold.green
+	if current_directory.length > 84 #IF CD02
+	 print "Relative path".bold.cyan << " - "; puts "#{Dir.pwd}".bold.green
+ 	 print "Absolute path".bold.cyan << " - "; puts "#{File.basename Dir.pwd}\n".bold.green
 	 
 	else # ELSE CD02 
-	 puts current_directory.bold.green
+	 puts current_directory
 	end  # IF CD02
 
 end
-#=======================================================================#
+
 def cd_to_dir
 
 path_dir = $SYSDIRECTORY + '\setting\path' # ..rootshell\setting\path
@@ -35,14 +36,61 @@ path_dir = $SYSDIRECTORY + '\setting\path' # ..rootshell\setting\path
 		 Dir.chdir(short_path)
 		end
 	 else 
-	 puts "The system cannot find the path specified."
+	 puts "The system cannot find the path specified.\n".bold.red
 	 Dir.chdir($prev_dir)
 	 end
 	
 	else 
-	 puts "The system cannot find the path specified."
+	 puts "The system cannot find the path specified.\n".bold.red
 	 Dir.chdir($prev_dir)
 	end
 
 end
-#=======================================================================#
+
+#======================== DIRECTORY RELATED COMMANDS ========================#
+
+#======================== FILE RELATED COMMANDS ========================#
+def newFile
+
+	if File.exists?($file)
+	
+	 puts "#{$file} exists, do you want to replace it?(Y/N)"
+	  loop do
+	  
+	   print "> "; choice = get_character.chr
+	   
+	     if choice =~ /y/i
+		  
+		  puts "Write to #{$file} Type EnD to finish writing.".bold.green
+		  file = File.open($file,"w")
+		   loop do
+		    print "> "
+		    content = gets.chomp
+		     break if content == "EnD"
+	 	     file.puts(content)
+		    end
+		   file.close
+		   puts "Finished writing.\n".bold.green
+		  
+		 elsif choice =~ /n/i
+	       break; puts "New file was not created.\n".bold.cyan
+		  end
+	  end
+	  
+	else 
+
+	 puts "Write to #{$file} Type EnD to finish writing.".bold.green
+	 file = File.open($file,"w")
+	  loop do
+	  print "> "
+	  content = gets.chomp
+	   break if content == "EnD"
+	   file.puts(content)
+	  end
+	  file.close
+	 puts "Finished writing.\n".bold.green
+	
+	end
+end
+
+#======================== FILE RELATED COMMANDS ========================#
