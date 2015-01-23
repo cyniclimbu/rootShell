@@ -52,14 +52,17 @@ end
 #======================== FILE RELATED COMMANDS ========================#
 def newFile
 
-	if File.exists?($file)
+	if $file =~ /^(\s+.*|.*[\/:"?*|<>].*|.*\s+||.*\.)$/ or $file.include?('\\')
+	  puts "Invalid file name.\n".bold.blue
+	  
+	elsif File.exists?($file)
 	
 	 puts "#{$file} exists, do you want to replace it?(Y/N)"
 	  loop do
 	  
-	   print "> "; choice = get_character.chr
+	   print "> "; choice = get_character.chr; puts "\n"
 	   
-	     if choice =~ /y/i
+	     if choice =~ /y/i; print "Yes\n"
 		  
 		  puts "Write to #{$file} Type EnD to finish writing.".bold.green
 		  file = File.open($file,"w")
@@ -72,7 +75,7 @@ def newFile
 		   file.close
 		   puts "Finished writing.\n".bold.green
 		  
-		 elsif choice =~ /n/i
+		 elsif choice =~ /n/i; print "No\n"
 	       break; puts "New file was not created.\n".bold.cyan
 		  end
 	  end
