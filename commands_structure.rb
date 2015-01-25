@@ -1,7 +1,7 @@
 #======================== DIRECTORY RELATED COMMANDS ========================#
 def cd
 
-current_directory = "Relative path - #{Dir.pwd.gsub('/','\\')} Absolute path - #{File.basename Dir.pwd}\n".bold.green
+current_directory = "Relative path - #{Dir.pwd.gsub('/','\\')} | Absolute path - #{File.basename Dir.pwd}\n".bold.green
 
 	if current_directory.length > 84 #IF CD02
 	 print "Relative path".bold.cyan << " - "; puts "#{Dir.pwd}".bold.green
@@ -47,6 +47,83 @@ path_dir = $SYSDIRECTORY + '\setting\path' # ..rootshell\setting\path
 
 end
 
+def dir
+	contents = Dir.glob'*'
+	puts "Directory of #{Dir.pwd}"
+	 
+	contents.each do |list|
+	 
+	 if Dir.exists?(list) 
+	  print "#{list}".bold.white << " - " << "Directory.\n".bold.green
+	   
+	 elsif File.exists?(list)
+	  print "#{list}".bold.cyan << " - " << "File.\n".bold.green
+	  
+	 else
+	  print "#{list}".bold.cyan << " - " << "Unknown.\n".bold.green
+	 end
+	end
+end
+
+def dir_extension
+
+ command = $command 
+ command = command.scan(/\S+ ?/)
+ 
+   if command.size >= 4
+    puts "Bad extension.".bold.red
+
+   else
+    extension = command.delete_at(2)
+	
+     if not extension.include?(".")
+      extension = "." << extension
+	  extension = Dir.glob"*#{extension}"
+	  
+      extension.each do |list|
+	   puts list.bold.cyan
+	  end
+	  
+	 else 
+	  extension = Dir.glob"*#{extension}"
+	  
+      extension.each do |list|
+	   puts list.bold.cyan
+	  end
+	  
+     end
+   
+   end
+puts "\n" 
+ 
+end
+
+def dir_folder
+
+contents = Dir.glob"*"
+
+ contents.each do |list|
+  
+  next if File.file?(list)
+  puts list.bold.cyan
+  
+ end
+puts "\n"
+end
+
+def dir_file
+
+contents = Dir.glob"*"
+
+ contents.each do |list|
+  
+  next if File.directory?(list)
+  puts list.bold.cyan
+  
+ end
+puts "\n"
+end
+
 #======================== DIRECTORY RELATED COMMANDS ========================#
 
 #======================== FILE RELATED COMMANDS ========================#
@@ -60,23 +137,27 @@ def newFile
 	 puts "#{$file} exists, do you want to replace it?(Y/N)"
 	  loop do
 	  
-	   print "> "; choice = get_character.chr; puts "\n"
+	   print "> "; choice = get_character.chr
 	   
-	     if choice =~ /y/i; print "Yes\n"
+	     if choice =~ /y/i; puts "Yes\n"
 		  
 		  puts "Write to #{$file} Type EnD to finish writing.".bold.green
 		  file = File.open($file,"w")
+		  
 		   loop do
 		    print "> "
 		    content = gets.chomp
 		     break if content == "EnD"
 	 	     file.puts(content)
 		    end
+			
 		   file.close
-		   puts "Finished writing.\n".bold.green
-		  
-		 elsif choice =~ /n/i; print "No\n"
-	       break; puts "New file was not created.\n".bold.cyan
+		   puts "Finished writing.\n".bold.green; break
+		   
+		 elsif choice =~ /n/i; puts "No\n"
+	       puts "File was not over-written.\n".bold.cyan; break
+		   
+		 else puts "\n"  
 		  end
 	  end
 	  
@@ -84,16 +165,113 @@ def newFile
 
 	 puts "Write to #{$file} Type EnD to finish writing.".bold.green
 	 file = File.open($file,"w")
+	 
 	  loop do
 	  print "> "
 	  content = gets.chomp
 	   break if content == "EnD"
 	   file.puts(content)
 	  end
+	  
 	  file.close
 	 puts "Finished writing.\n".bold.green
 	
 	end
 end
 
+def openFile
+
+	if $file =~ /^(\s+.*|.*[\/:"?*|<>].*|.*\s+||.*\.)$/ or $file.include?('\\')
+	  puts "Invalid file name.\n".bold.blue
+	
+	elsif not File.exist?($file)
+	 puts "#{$file} does not exist. Create as new file?(Y/N)"
+	 
+		loop do
+	  
+	     print "> "; choice = get_character.chr
+	   
+	      if choice =~ /y/i; puts "Yes\n"
+		   puts "Write to #{$file} Type EnD to finish writing.".bold.green
+		   file = File.new($file,"a")
+		   
+		    loop do
+		     print "> "
+		     content = gets.chomp
+		      break if content == "EnD"
+	 	      file.puts(content)
+		    end
+			
+		   file.close
+		   puts "Finished writing.\n".bold.green; break
+		   
+		 elsif choice =~ /n/i; puts "No\n"
+	       puts "New file was not created.\n".bold.cyan; break
+		   
+		 else puts "\n"  
+		  end
+	  end
+	  
+	else  
+	
+	puts "Write to #{$file} Type EnD to finish writing.".bold.green
+	file = File.open($file,"a")
+	
+	  loop do
+	   print "> "
+	   content = gets.chomp
+	    break if content == "EnD"
+	    file.puts(content)
+	  end
+	  
+	file.close
+    puts "Finished writing.\n".bold.green
+	end
+	
+end
 #======================== FILE RELATED COMMANDS ========================#
+
+#======================== OTHER COMMANDS ========================#
+def delete
+x = $command 
+
+puts "Are you sure?(Y/N)".bold.green
+
+loop do
+
+print "> "; choice = get_character.chr
+
+  if choice =~ /y/i
+ 
+   if File.file?(x)
+    File.delete(x)
+	
+	 if File.exists?(x)
+	  print "Error".bold.red << " #{x} couldn't be deleted.\n\n"
+
+	 else
+	  print "#{x}".bold.cyan << " was deleted.\n\n"
+	 end; break
+	
+   elsif File.directory?(x)
+	system("rmdir #{x} /Q /S") # Umm... (._.) (`_`) ('_') (._.)
+	
+	 if Dir.exists?(x)
+	  print "Error".bold.red << " #{x} couldn't be deleted.\n\n"
+
+	 else
+	  print "#{x}".bold.cyan << " was deleted\n\n"
+	 end; break
+	
+   else
+    puts "#{x}".bold.cyan << " is nowhere to be found.\n\n"; break
+   end
+ 
+  elsif choice =~ /n/i
+   puts "#{x}".bold.cyan << " was not deleted.\n\n"; break
+  
+  else
+   puts "\n"
+  end
+end
+end
