@@ -13,10 +13,10 @@ ROOTSHELL     = "rootShell"
 DEV           = "SeeWhyAnEyeSee"
 VERSION       = "0.1"
 SHELLERROR    = "An unknown error occurred, please check your input.\nMaybe a bug!"
-OUTTAATTEMPTS = "OUT OF ATTEMPTS\nRestart the shell to try again.".bold.white
+OUTTAATTEMPTS = "OUT OF ATTEMPTS\nRestart the shell to try again."
 TIMER         = [0.00001,0.00001,0.01,0.001,0,0.0001,0.1,0.1,0.0001,0.0001,0.01,0.0000001]
 PERCENTAGE    = (1..100)
-DRIVENAME     = /^[(a-z)]:/i.match(Dir.pwd).to_s # GET CURRENT DRIVE NAME E.G: C:, D:, E:
+DRIVENAME     = /^[(a-z)]:/i.match(Dir.pwd).to_s # GET CURRENT DRIVE NAME e.g: C:, D:, E:
 WINDOWS       = DRIVENAME + '\windows'
 
 =begin

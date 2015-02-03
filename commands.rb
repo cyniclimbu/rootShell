@@ -54,6 +54,16 @@ print "#{Dir.pwd.capitalize.gsub('/','\\')}>"; command = gets.chomp.downcase
 	 openFile
 	 
 ##---------------------------------------------------------------##
+	elsif command.strip == "setting" || command.strip == "SETTING"
+	 SETTING() # Small brackets because SETTING will be confused for a CONSTANT
+##---------------------------------------------------------------##
+	elsif command.strip == "start" || command.strip == "START"
+	 puts "Start what?\n".bold.white
+	 
+	elsif command.include?("start")
+	 command = command.scan(/\S+ ?/)
+	 command.delete_at(0); $command = command.join
+	 explorer
 	
 	elsif command.strip == "del" || command.strip == "DEL" || command.strip == "delete" || command.strip == "DELETE"
 	 puts "Delete what?\n".bold.green
@@ -65,7 +75,12 @@ print "#{Dir.pwd.capitalize.gsub('/','\\')}>"; command = gets.chomp.downcase
 	
 	elsif command.strip == "cls" || command.strip == "CLS" || command.strip == "clear" || command.strip == "CLEAR"
 	 system("cls")
+	
+	elsif command.strip == "exit" || command.strip == "EXIT"
+	 exit
 	 
+	elsif command.empty?
+	
 	else
 	 print "Unknown command - ".bold.cyan; puts "#{command}\n".bold.red
 	end
