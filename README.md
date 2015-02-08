@@ -3,7 +3,7 @@ What is rootShell?
 rootShell is a program written completely in Ruby which imitates command prompt. 
 All you do is type commands. 
 
-There isn't any help command available currently. :hushed:
+Help command available at the moment :hushed: 
 
 Please refer to pastebin.com/2WjxnuCh until help command is available. :grimacing:
 
@@ -19,4 +19,5 @@ It's completely raw and hard to read and also there are some bugs which have not
 
 pastebin.com/Fx1rgtKB - Old rootShell.
 
+Usage instruction: 
 To use rootShell simply open rootShell.rb and follow presented instructions on the shell. :ok_hand:
