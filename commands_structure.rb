@@ -22,7 +22,7 @@ path_dir = $SYSDIRECTORY + '\setting\path' # ..rootshell\setting\path
 	else # CAN BE USED check_custom_dir from main_methods.rb instead of this if/else statement
 	 # short_dir = false
 	 # Dir.mkdir(path_dir)  # This will only work if the last dir is missing
-	 short_dir = false   # In this case it's '\path' Is '\setting' is missing this won't work at all
+	 short_dir = false   # In this case if '\setting' is missing .mkdir would fail.
 	end
 
 	if Dir.exists?($cd_to_dir)
@@ -33,9 +33,12 @@ path_dir = $SYSDIRECTORY + '\setting\path' # ..rootshell\setting\path
 	 Dir.chdir(path_dir)
 	 
 	 if File.exists?($cd2dir) and File.zero?($cd2dir) == false and File.size?($cd2dir) <= 3000 # 3 KB
-	  short_path = File.read($cd2dir).delete("\n")
+	  short_path = File.read($cd2dir).chomp
 		if Dir.exists?(short_path)
 		 Dir.chdir(short_path)
+		else  
+		 puts "The system cannot find the path specified.\n".bold.red
+		 Dir.chdir($prev_dir)
 		end
 	 else 
 	 puts "The system cannot find the path specified.\n".bold.red
@@ -51,18 +54,18 @@ end
 
 def dir
 	contents = Dir.glob'*'
-	puts "Directory of #{Dir.pwd}"
+	puts "\nDirectory of ".bold.white << "#{Dir.pwd.capitalize}\n".bold.green
 	 
 	contents.each do |list|
 	 
 	 if File.directory?(list) 
-	  print "#{list}".bold.white << " - " << "Directory.\n".bold.green
+	  puts "#{list}".bold.white << " - " << "Directory.".bold.green
 	   
 	 elsif File.file?(list)
-	  print "#{list}".bold.cyan << " - " << "File.\n".bold.green
+	  puts "#{list}".bold.cyan << " - " << "File.".bold.green
 	  
 	 else
-	  print "#{list}".bold.cyan << " - " << "Unknown.\n".bold.red
+	  puts "#{list}".bold.cyan << " - " << "Unknown.".bold.red
 	 end
 	end
 end
@@ -72,14 +75,18 @@ def dir_extension
  command = $command 
  command = command.scan(/\S+ ?/)
  
-   if command.size >= 4
+   if command.size >= 4 # 4 => ["foo","bar","lol","hai"]
     puts "Bad extension.".bold.red
 
    else
-    extension = command.delete_at(2)
-	
+	 extension = command.delete_at(2)
+	 
      if not extension.include?(".")
       extension = "." << extension
+	  
+	  puts "\nDirectory of ".bold.white << "#{Dir.pwd.capitalize}\n".bold.green
+	  puts "Filter: ".bold.green << "#{extension}".bold.white
+	  
 	  extension = Dir.glob"*#{extension}"
 	  
       extension.each do |list|
@@ -87,6 +94,8 @@ def dir_extension
 	  end
 	  
 	 else 
+	  puts "\nDirectory of ".bold.white << "#{Dir.pwd.capitalize}\n".bold.green
+	  puts "Filter: ".bold.green << "#{extension}".bold.white
 	  extension = Dir.glob"*#{extension}"
 	  
       extension.each do |list|
@@ -104,107 +113,110 @@ def dir_folder
 
 contents = Dir.glob"*"
 
- contents.each do |list|
-  
-  next if File.file?(list)
-  puts list.bold.cyan
-  
- end
+puts "\nDirectory of ".bold.white << "#{Dir.pwd.capitalize}\n".bold.green
+puts "Filter: ".bold.green << "Folder only".bold.white
+
+   contents.each do |list|
+    next if File.file?(list)
+    puts list.bold.cyan
+   end
+ 
 puts "\n"
 end
 
 def dir_file
+contents = Dir.glob
 
-contents = Dir.glob"*"
+puts "\nDirectory of ".bold.white << "#{Dir.pwd.capitalize}\n".bold.green
+puts "Filter: ".bold.green << "File only".bold.white
 
- contents.each do |list|
-  
-  next if File.directory?(list)
-  puts list.bold.cyan
-  
- end
+   contents.each do |list|
+    next if File.directory?(list)
+    puts list.bold.white
+   end
+ 
 puts "\n"
 end
 
 #======================== DIRECTORY RELATED COMMANDS ========================#
 
 #======================== FILE RELATED COMMANDS ========================#
-def newFile
+def newFile(file)
 
-	if $file =~ /^(\s+.*|.*[\/:"?*|<>].*|.*\s+||.*\.)$/ or $file.include?('\\')
+	if file =~ /^(\s+.*|.*[\/:"?*|<>].*|.*\s+||.*\.)$/ or file.include?('\\') # Check for invalid file name characters
 	  puts "Invalid file name.\n".bold.blue
 	  
-	elsif File.exists?($file)
+	elsif File.exists?(file)
 	
-	 puts "#{$file} exists, do you want to replace it?(Y/N)"
+	 puts "#{file} exists, do you want to replace it?(Y/N)"
 	  loop do
 	  
 	   print "> "; choice = get_character.chr
 	   
 	     if choice =~ /y/i; puts "Yes\n"
 		  
-		  puts "Write to #{$file} Type EnD to finish writing.".bold.green
-		  file = File.open($file,"w")
+		  puts "Write to #{file} Type EnD to finish writing.".bold.green
+		  openfile = File.open(file,"w")
 		  
 		   loop do
 		    print "> "
 		    content = gets.chomp
 		     break if content == "EnD"
-	 	     file.puts(content)
+	 	     openfile.puts(content)
 		    end
 			
-		   file.close
+		   openfile.close
 		   puts "Finished writing.\n".bold.green; break
 		   
 		 elsif choice =~ /n/i; puts "No\n"
 	       puts "File was not over-written.\n".bold.cyan; break
 		   
 		 else puts "\n"  
-		  end
+		 end
 	  end
 	  
 	else 
 
-	 puts "Write to #{$file} Type EnD to finish writing.".bold.green
-	 file = File.open($file,"w")
+	 puts "Write to #{file} Type EnD to finish writing.".bold.green
+	 newfile = File.new(file,"w")
 	 
 	  loop do
 	  print "> "
 	  content = gets.chomp
 	   break if content == "EnD"
-	   file.puts(content)
+	   newfile.puts(content)
 	  end
 	  
-	  file.close
+	  newfile.close
 	 puts "Finished writing.\n".bold.green
 	
 	end
 end
 
-def openFile
+def openFile(file)
 
-	if $file =~ /^(\s+.*|.*[\/:"?*|<>].*|.*\s+||.*\.)$/ or $file.include?('\\')
+	if file =~ /^(\s+.*|.*[\/:"?*|<>].*|.*\s+||.*\.)$/ or file.include?('\\') # Check for invalid file name characters
 	  puts "Invalid file name.\n".bold.blue
 	
-	elsif not File.exist?($file)
-	 puts "#{$file} does not exist. Create as new file?(Y/N)"
+	elsif not File.exist?(file)
+	 puts "#{file} does not exist. Create as new file?(Y/N)"
 	 
 		loop do
 	  
 	     print "> "; choice = get_character.chr
 	   
 	      if choice =~ /y/i; puts "Yes\n"
-		   puts "Write to #{$file} Type EnD to finish writing.".bold.green
-		   file = File.new($file,"a")
+		   puts "Write to #{file} Type EnD to finish writing.".bold.green
+		   newfile = File.new(file,"a")
 		   
 		    loop do
 		     print "> "
 		     content = gets.chomp
 		      break if content == "EnD"
-	 	      file.puts(content)
+	 	      newfile.puts(content)
 		    end
 			
-		   file.close
+		   newfile.close
 		   puts "Finished writing.\n".bold.green; break
 		   
 		 elsif choice =~ /n/i; puts "No\n"
@@ -216,17 +228,17 @@ def openFile
 	  
 	else  
 	
-	puts "Write to #{$file} Type EnD to finish writing.".bold.green
-	file = File.open($file,"a")
+	puts "Write to #{file} Type EnD to finish writing.".bold.green
+	openfile = File.open(file,"a")
 	
 	  loop do
 	   print "> "
 	   content = gets.chomp
 	    break if content == "EnD"
-	    file.puts(content)
+	    openfile.puts(content)
 	  end
 	  
-	file.close
+	openfile.close
     puts "Finished writing.\n".bold.green
 	end
 	
@@ -283,16 +295,87 @@ end
 end
 
 def explorer
-target = $command 
 
- if Dir.exists?(target) || File.exists?(target)
+prev_dir = Dir.pwd
+target = $command 
+path_dir = $SYSDIRECTORY + '\setting\path' # ..rootshell\setting\path
+
+	if Dir.exists?(path_dir)
+	 short_dir = true
+	else # CAN BE USED check_custom_dir from main_methods.rb instead of this if/else statement
+	 # short_dir = false
+	 # Dir.mkdir(path_dir)  # This will only work if the last dir is missing
+	 short_dir = false   # In this case it's '\path' Is '\setting' is missing this won't work at all
+	end
+
+ if Dir.exists?(target) || File.exists?(target)  
   puts "Waiting.".bold.white
   system("explorer #{target}")
+  
+ elsif path_dir
+  Dir.chdir path_dir
+  
+	 if File.exists?(target) and File.zero?(target) == false and File.size?(target) <= 3000 # 3 KB
+	  short_path = File.read(target).chomp
+	  
+		if Dir.exists?(short_path) || File.exists?(target)
+		 puts "Waiting.".bold.white
+		 system("explorer #{short_path}")
+		end
+		
+	 else 
+	 print "#{target}".white.cyan << " does not exist or cannot be opened.\n\n".bold.green
+	 end
  
  else
-  print "#{target}".bold.cyan << " does not exist or cannot be opened.\n\n".bold.green
+  print "#{target}".bold.white << " does not exist or cannot be opened.\n\n".bold.green
  end
 
+Dir.chdir prev_dir
+
+end
+
+def hideContents(command,contents)
+
+  if contents == "all"
+
+   listContents = Dir.glob'*'
+
+    listContents.each do |hide|
+	 
+	 system("attrib +s +h \"#{hide}\"")
+	 
+    end
+  
+  elsif contents == "single"
+   
+   if File.exists?(command) || Dir.exists?(command)
+    system("attrib +s +h \"#{command}\"")  # command => single file/dir name
+	
+   else
+    puts "#{command}".bold.cyan << " does not exist.\n".bold.red
+   end
+   
+  
+  end
+
+end
+
+def showContents(command,contents)
+
+  if contents == "all"
+   listContents = Dir.glob'*'
+
+    listContents.each do |show|
+	 
+	 system("attrib -s -h \"#{show}\"")
+	 
+    end
+  
+  elsif contents == "single"
+   system("attrib -s -h \"#{command}\"")  # command => single file/dir name
+   
+  end
 
 end
 

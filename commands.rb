@@ -1,11 +1,11 @@
-print "#{ROOTSHELL}".bold.green; print " by ".bold.white; puts "#{DEV}\n".bold.cyan
+puts "#{ROOTSHELL}".bold.green << " by ".bold.white << "#{DEV}\n".bold.cyan << "Version - ".bold.white << "#{VERSION}\n".bold.magenta
 
 
 # Command shell begins from below here.
 
 loop do # INFINITE LOOP FOR commands
 
-print "#{Dir.pwd.capitalize.gsub('/','\\')}>"; command = gets.chomp.downcase
+print "#{Dir.pwd.capitalize.gsub('/','\\')}>"; command = gets.chomp.downcase # CASE INSENSITIVE!
 
 ##---------------------------------------------------------------##
 	if command.strip == "cd" || command.strip == "CD"
@@ -19,30 +19,29 @@ print "#{Dir.pwd.capitalize.gsub('/','\\')}>"; command = gets.chomp.downcase
 #---------------------------------------------------------------#	 
 	elsif command.strip == "dir" || command.strip == "DIR"
 	 dir
-#---------------------------------------------------------------#	
+	
 	elsif command.strip == "dir ext" || command.strip == "DIR EXT"
-	 puts "Extension is " << " not defined.\n".bold.red
+	 puts "Extension is " << "not defined.\n".bold.red
 	 
 	elsif command =~ /dir ext/i
 	 $command = command
 	 dir_extension
 	
-	elsif command.strip == "dir file" || command.strip == "DIR FILE"
+	elsif command.strip == "dir files" || command.strip == "DIR FILES"
 	 dir_file
 	 
-	elsif command.strip == "dir folder" || command.strip == "DIR FOLDER"
+	elsif command.strip == "dir folders" || command.strip == "DIR FOLDERS"
 	 dir_folder
 	 
 ##---------------------------------------------------------------##
-
 	elsif command.strip == "newfile" || command.strip == "NEWFILE"
 	 puts "File name is " << "not defined.\n".bold.red
 	 
 	elsif command =~ /newfile/i
 	
 	 filename = command.scan(/\S+ ?/) # "a b c"  =>  ["a ","b ","c "]
-	 filename.delete_at(0); $file = filename.join
-	 newFile
+	 filename.delete_at(0); file = filename.join
+	 newFile(file)
 #---------------------------------------------------------------#	 
 	elsif command.strip == "openfile" || command.strip == "OPENFILE"
 	 puts "File name is " << "not defined.\n".bold.red
@@ -50,8 +49,43 @@ print "#{Dir.pwd.capitalize.gsub('/','\\')}>"; command = gets.chomp.downcase
 	elsif command =~ /openfile/i
 	
 	 filename = command.scan(/\S+ ?/) # "a b c"  =>  ["a ","b ","c "]
-	 filename.delete_at(0); $file = filename.join
-	 openFile
+	 filename.delete_at(0); file = filename.join
+	 openFile(file)
+##---------------------------------------------------------------##
+	elsif command.strip == "hide" || command.strip == "HIDE"
+	 puts "Content is not defined.\n".bold.red
+	 
+	elsif command =~ /hide/i
+	 # command = command.strip; 
+	 command = command.scan(/\S+ ?/)
+	 
+	 if command.include?("all")
+	  contents = "all"
+	  hideContents(command, contents)
+	 
+	 else
+	  contents = "single"
+	  command.delete_at(0); command = command.join
+	  hideContents(command, contents)
+	 end
+##---------------------------------------------------------------##	 
+	elsif command.strip == "show" || command.strip == "SHOW"
+	 puts "Content is not defined.\n".bold.red
+	 
+	elsif command =~ /show/i
+	 # command = command.strip; 
+	 command = command.scan(/\S+ ?/)
+	 
+	 if command.include?("all")
+	  contents = "all"
+	  showContents(command, contents)
+	 
+	 else
+	  contents = "single"
+	  command.delete_at(0); command = command.join
+	  #puts command For debugging purpose
+	  showContents(command, contents)
+	 end
 	 
 ##---------------------------------------------------------------##
 	elsif command.strip == "setting" || command.strip == "SETTING"
@@ -64,10 +98,10 @@ print "#{Dir.pwd.capitalize.gsub('/','\\')}>"; command = gets.chomp.downcase
 	 command = command.scan(/\S+ ?/)
 	 command.delete_at(0); $command = command.join
 	 explorer
-	
+##---------------------------------------------------------------##	
 	elsif command.strip == "del" || command.strip == "DEL" || command.strip == "delete" || command.strip == "DELETE"
 	 puts "Delete what?\n".bold.green
-	
+##---------------------------------------------------------------##	
 	elsif command =~ /del/i || command =~ /delete/i
 	 command = command.scan(/\S+ ?/)
 	 command.delete_at(0); $command = command.join

@@ -1,6 +1,6 @@
 ## This script is part of rootShell and is not interactive. ##
-## This script won't work as colored gem is not loaded in this file. ##
-# It will be loaded via rootShell.rb #
+## This script won't work alone as colored gem is not loaded in this file. ##
+# colored will be loaded via rootShell.rb #
 require 'highline'
 require 'highline/import'
 require 'win32ole'
@@ -11,13 +11,13 @@ require 'digest' # OR require 'qwikcrypt' FOR AES
 
 ROOTSHELL     = "rootShell"
 DEV           = "SeeWhyAnEyeSee"
-VERSION       = "0.1"
-SHELLERROR    = "An unknown error occurred, please check your input.\nMaybe a bug!"
-OUTTAATTEMPTS = "OUT OF ATTEMPTS\nRestart the shell to try again."
-TIMER         = [0.00001,0.00001,0.01,0.001,0,0.0001,0.1,0.1,0.0001,0.0001,0.01,0.0000001]
-PERCENTAGE    = (1..100)
+VERSION       = "0.08"
+SHELLERROR    = "An unknown error occurred, please check your input.\nMaybe a bug!".bold.red
+OUTTAATTEMPTS = "OUT OF ATTEMPTS\nRestart the shell to try again.".bold.white
 DRIVENAME     = /^[(a-z)]:/i.match(Dir.pwd).to_s # GET CURRENT DRIVE NAME e.g: C:, D:, E:
 WINDOWS       = DRIVENAME + '\windows'
+# TIMER         = [0.00001,0.00001,0.01,0.001,0,0.0001,0.1,0.1,0.0001,0.0001,0.01,0.0000001]
+# PERCENTAGE    = (1..100)
 
 =begin
  This file is a part of rootShell project.

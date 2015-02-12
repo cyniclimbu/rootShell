@@ -1,16 +1,17 @@
 # This script is part of rootShell and is not interactive.
 
 def check_files # CHECK IF SYSTEMFILES EXISTS
-	if Dir.exists?(ROOTSHELL)
-	 $SYSDIRECTORY = Dir.pwd + '\rootShell'
-	 $SYSSTATUS    = true
-	elsif not Dir.exists?(WINDOWS) or not Dir.exists?(WINDOWS + '\SeeWhyAnEyeSee')
+	# if Dir.exists?(ROOTSHELL)
+	# $SYSDIRECTORY = Dir.pwd + '\rootShell'
+	# $SYSSTATUS    = true
+	if not Dir.exists?(WINDOWS) or not Dir.exists?(WINDOWS + '\SeeWhyAnEyeSee') # Look at line 10 to see why this is important.
 	 $SYSSTATUS    = false
 	elsif File.exists?(WINDOWS + '\seewhyaneyesee\path')
 	 Dir.chdir WINDOWS + '\seewhyaneyesee'
 		if not File.zero?("path")
 		  readPath = IO.readlines("path")
-		  sysdir   = readPath[0].delete("\n")
+		  sysdir   = readPath[0].chomp # c:\example/n => c:\example
+		  
 			if Dir.exists?(sysdir)
 			 $SYSDIRECTORY = sysdir
 			 $SYSSTATUS    = true
@@ -28,7 +29,7 @@ end # END OF METHOD check_files
 #=======================================================================#
 #=======================================================================#
 def check_custom_dir
-# NOT IN USE CURRENTLY
+## NOT IN USE CURRENTLY ##
 	if not defined?($custom_dir)
 	 puts "Custom path is not defined.".bold.red; system("pause"); exit
 	 
@@ -303,10 +304,10 @@ puts "- Creating setting directory.".bold.yellow
 Dir.mkdir("setting"); Dir.chdir("setting")
 Dir.mkdir("path")
 
-puts "Writing path to #{WINDOWS + '\SeeWhyAnEyeSee'}"
+puts "Checking " << "#{WINDOWS}".bold.green << " directory." 
 	
 	if not Dir.exists?(WINDOWS)
-	 puts WINDOWS + " was not found."
+	 puts WINDOWS << " was not found."
 	 puts "If rootShell went full retard please contact me. Email is in readme.txt on #{Dir.pwd}".bold.cyan
 	 system("pause"); exit
 	end
@@ -320,7 +321,7 @@ puts "- Creating directory SeeWhyAnEyeSee on #{WINDOWS}".bold.yellow
 	 sleep 0.4
 	 
 		if Dir.exists?("SeeWhyAnEyeSee")
-		 puts "- An error occurred while removing #{WINDOWS + '\SeeWhyAnEyeSee'}.".bold.red; system("pause"); exit
+		 puts "- An error occurred while removing #{WINDOWS << '\SeeWhyAnEyeSee'}.".bold.red; system("pause"); exit
 		end
 
 	end
