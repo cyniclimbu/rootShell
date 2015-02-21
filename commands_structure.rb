@@ -70,12 +70,10 @@ def dir
 	end
 end
 
-def dir_extension
-
- command = $command 
- command = command.scan(/\S+ ?/)
+def dir_extension(command)
+command = command.scan(/\S+ ?/)
  
-   if command.size >= 4 # 4 => ["foo","bar","lol","hai"]
+   if command.size >= 4 # 4 => ["size 1","size 2","size 3","size 4"]
     puts "Bad extension.".bold.red
 
    else
@@ -247,12 +245,14 @@ end
 
 
 #======================== NETWORK COMMANDS ========================#
+def ping(host)
+ping = system("ping #{host}")
+puts "\n"
 
+end
 
 #======================== OTHER COMMANDS ========================#
-def delete
-x = $command 
-
+def delete(content)
 puts "Are you sure?(Y/N)".bold.green
 
 loop do
@@ -261,32 +261,32 @@ print "> "; choice = get_character.chr
 
   if choice =~ /y/i
  
-   if File.file?(x)
-    File.delete(x)
+   if File.file?(content)
+    File.delete(content)
 	
-	 if File.exists?(x)
-	  print "Error".bold.red << " #{x} couldn't be deleted.\n\n"
+	 if File.exists?(content)
+	  print "Error".bold.red << " #{content} couldn't be deleted.\n\n"
 
 	 else
-	  print "#{x}".bold.cyan << " was deleted.\n\n"
+	  print "#{content}".bold.cyan << " was deleted.\n\n"
 	 end; break
 	
-   elsif File.directory?(x)
-	system("rmdir #{x} /Q /S") # Umm... (._.) (`_`) ('_') (._.)
+   elsif File.directory?(content)
+	system("rmdir #{content} /Q /S") # Umm... (._.) (`_`) ('_') (._.)
 	
-	 if Dir.exists?(x)
-	  print "Error".bold.red << " #{x} couldn't be deleted.\n\n"
+	 if Dir.exists?(content)
+	  print "Error".bold.red << " #{content} couldn't be deleted.\n\n"
 
 	 else
-	  print "#{x}".bold.cyan << " was deleted\n\n"
+	  print "#{content}".bold.cyan << " was deleted\n\n"
 	 end; break
 	
    else
-    puts "#{x}".bold.cyan << " is nowhere to be found.\n\n"; break
+    puts "#{content}".bold.cyan << " is nowhere to be found.\n\n"; break
    end
  
   elsif choice =~ /n/i
-   puts "#{x}".bold.cyan << " was not deleted.\n\n"; break
+   puts "#{content}".bold.cyan << " was not deleted.\n\n"; break
   
   else
    puts "\n"
@@ -294,10 +294,8 @@ print "> "; choice = get_character.chr
 end
 end
 
-def explorer
-
+def explorer(target)
 prev_dir = Dir.pwd
-target = $command 
 path_dir = $SYSDIRECTORY + '\setting\path' # ..rootshell\setting\path
 
 	if Dir.exists?(path_dir)
