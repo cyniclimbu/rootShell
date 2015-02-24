@@ -11,7 +11,7 @@ require 'digest' # OR require 'qwikcrypt' FOR AES
 
 ROOTSHELL     = "rootShell"
 DEV           = "SeeWhyAnEyeSee"
-VERSION       = "0.08"
+VERSION       = "0.11"
 SHELLERROR    = "An unknown error occurred, please check your input.\nMaybe a bug!".bold.red
 OUTTAATTEMPTS = "OUT OF ATTEMPTS\nRestart the shell to try again.".bold.white
 DRIVENAME     = /^[(a-z)]:/i.match(Dir.pwd).to_s # GET CURRENT DRIVE NAME e.g: C:, D:, E:
