@@ -16,7 +16,7 @@ print "#{Dir.pwd.capitalize.gsub('/','\\')}>"; command = gets.chomp.downcase # C
 
 	elsif command =~ /cd/i
 	 $prev_dir = Dir.pwd
-	 $cd2dir = command.split(' ')[1] # FOR SHORT PATH FEATURE
+	 $cd2dir = command.scan(/\S+ ?/); $cd2dir.delete_at(0) # FOR both SHORT PATH FEATUREs & ABSOLUTE PATH FEATUREss
 	 $cd_to_dir = /([A-Z|a-z]:\\[^*|"<>?\n]*)|(\\\\.*?\\.*)/.match(command).to_s # FOR USUAL DIR NAVIGATION
 	 cd_to_dir
 	 
@@ -110,8 +110,13 @@ print "#{Dir.pwd.capitalize.gsub('/','\\')}>"; command = gets.chomp.downcase # C
 	 
 	elsif command =~ /ipconfig/i
 	 system(command); puts "\n"
-	 
 ##---------------------------------------------------------------##
+	elsif command.strip == "text to md5"
+	 text2md5
+##---------------------------------------------------------------##
+	elsif command.strip == "seewhyeyesee" || command.strip == "hi"
+	 message
+##---------------------------------------------------------------##	
 	elsif command.strip == "setting" || command.strip == "SETTING"
 	 SETTING() # Small brackets because SETTING will be confused for a CONSTANT
 	 
@@ -133,7 +138,7 @@ print "#{Dir.pwd.capitalize.gsub('/','\\')}>"; command = gets.chomp.downcase # C
 	 command = command.scan(/\S+ ?/)
 	 command.delete_at(0); content = command.join
 	 delete(content)
-	
+##---------------------------------------------------------------##		
 	elsif command.strip == "cls" || command.strip == "CLS" || command.strip == "clear" || command.strip == "CLEAR"
 	 system("cls")
 	

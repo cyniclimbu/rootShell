@@ -1,11 +1,11 @@
 #======================== DIRECTORY RELATED COMMANDS ========================#
 def cd
 
-current_directory = "Relative path - #{Dir.pwd.gsub('/','\\')} | Absolute path - #{File.basename Dir.pwd}\n".bold.green
+current_directory = "Relative path".bold.cyan << " - " << "#{Dir.pwd.gsub('/','\\')}".bold.white << " | " << "Absolute path".bold.cyan << " - " << "#{File.basename Dir.pwd}\n".bold.white
 
-	if current_directory.length > 84 #IF CD02
-	 print "Relative path".bold.cyan << " - "; puts "#{Dir.pwd}".bold.green
- 	 print "Absolute path".bold.cyan << " - "; puts "#{File.basename Dir.pwd}\n".bold.green
+	if current_directory.length > 162 #IF CD02
+	 print "Relative path".bold.cyan << " - "; puts "#{Dir.pwd}".bold.white
+ 	 print "Absolute path".bold.cyan << " - "; puts "#{File.basename Dir.pwd}\n".bold.white
 	 
 	else # ELSE CD02 
 	 puts current_directory
@@ -17,6 +17,10 @@ def cd_to_dir
 
 path_dir = $SYSDIRECTORY + '\setting\path' # ..rootshell\setting\path
 
+   if $cd2dir.empty?
+	
+   else
+    
 	if Dir.exists?(path_dir)
 	 short_dir = true
 	else # CAN BE USED check_custom_dir from main_methods.rb instead of this if/else statement
@@ -25,15 +29,17 @@ path_dir = $SYSDIRECTORY + '\setting\path' # ..rootshell\setting\path
 	 short_dir = false   # In this case if '\setting' is missing .mkdir would fail.
 	end
 
-	if Dir.exists?($cd_to_dir)
-	 Dir.chdir($cd_to_dir)
-	elsif Dir.exists?($cd2dir)
-	 Dir.chdir($cd2dir)
+	if Dir.exists?($cd_to_dir) ### cd does not support chd to absolute paths with space e.g cd a stuff wouldnt work ###
+	 Dir.chdir($cd_to_dir)     ### cd c:\users\w4r10ck\desktop\root\a stuff would be the only solution to this, fix it! ###
+	 
+	elsif Dir.exists?($cd2dir.join)
+	 Dir.chdir($cd2dir.join)
+	 
 	elsif short_dir # true
 	 Dir.chdir(path_dir)
 	 
-	 if File.exists?($cd2dir) and File.zero?($cd2dir) == false and File.size?($cd2dir) <= 3000 # 3 KB
-	  short_path = File.read($cd2dir).chomp
+	 if File.exists?($cd2dir[0]) and File.zero?($cd2dir[0]) == false and File.size?($cd2dir[0]) <= 3000 # 3 KB
+	  short_path = File.read($cd2dir[0]).chomp
 		if Dir.exists?(short_path)
 		 Dir.chdir(short_path)
 		else  
@@ -49,6 +55,7 @@ path_dir = $SYSDIRECTORY + '\setting\path' # ..rootshell\setting\path
 	 puts "The system cannot find the path specified.\n".bold.red
 	 Dir.chdir($prev_dir)
 	end
+   end
 
 end
 
@@ -83,7 +90,7 @@ command = command.scan(/\S+ ?/)
       extension = "." << extension
 	  
 	  puts "\nDirectory of ".bold.white << "#{Dir.pwd.capitalize}\n".bold.green
-	  puts "Filter: ".bold.green << "#{extension}".bold.white
+	  puts "Filter: ".bold.green << "#{extension}\n".bold.white
 	  
 	  extension = Dir.glob"*#{extension}"
 	  
@@ -108,11 +115,10 @@ puts "\n"
 end
 
 def dir_folder
-
 contents = Dir.glob"*"
 
 puts "\nDirectory of ".bold.white << "#{Dir.pwd.capitalize}\n".bold.green
-puts "Filter: ".bold.green << "Folder only".bold.white
+puts "Filter: ".bold.green << "Folder only\n".bold.white
 
    contents.each do |list|
     next if File.file?(list)
@@ -123,10 +129,10 @@ puts "\n"
 end
 
 def dir_file
-contents = Dir.glob
+contents = Dir.glob"*"
 
 puts "\nDirectory of ".bold.white << "#{Dir.pwd.capitalize}\n".bold.green
-puts "Filter: ".bold.green << "File only".bold.white
+puts "Filter: ".bold.green << "File only\n".bold.white
 
    contents.each do |list|
     next if File.directory?(list)
@@ -252,6 +258,42 @@ puts "\n"
 end
 
 #======================== OTHER COMMANDS ========================#
+def message
+prev_dir = Dir.pwd
+
+	if Dir.exists?($SYSDIRECTORY)
+	 Dir.chdir $SYSDIRECTORY
+	 
+	  if File.exists?("message") and File.size?("message") <= 3000
+	  
+	   msg = IO.readlines("message")
+	   msg = msg.shuffle.pop.bold.cyan
+	   
+	  else 
+	   msg = "Where are my files?".bold.green << " #{ENV["COMPUTERNAME"].gsub(/-pc/i,"").downcase}".bold.cyan << " AARGH!!\n".bold.red 
+	  end # better than, system("echo %username%"), right?
+	else 
+	  msg = "Where are my files?".bold.green << " #{ENV["COMPUTERNAME"].gsub(/-pc/i,"").downcase}".bold.cyan << " AARGH!!\n".bold.red 
+	end
+	
+puts "#{msg}\n"
+Dir.chdir prev_dir
+
+end
+
+def text2md5
+puts "Type EnD to quit."
+
+  loop do
+   print "String: "; string = gets.chomp
+    break if string == "EnD"
+   puts Digest::MD5.hexdigest(string).bold.white
+   puts "\n"
+   
+  end
+puts "\n"
+end
+
 def delete(content)
 puts "Are you sure?(Y/N)".bold.green
 
