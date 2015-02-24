@@ -10,7 +10,7 @@ def check_files # CHECK IF SYSTEMFILES EXISTS
 	 Dir.chdir WINDOWS + '\seewhyaneyesee'
 		if not File.zero?("path")
 		  readPath = IO.readlines("path")
-		  sysdir   = readPath[0].chomp # c:\example\n => c:\example
+		  sysdir   = readPath[0].chomp # c:\example/n => c:\example
 		  
 			if Dir.exists?(sysdir)
 			 $SYSDIRECTORY = sysdir
@@ -250,19 +250,19 @@ system("cls")
 
 puts "INSTALLING\n".bold.cyan # More like creating directories and files :P
 print "Mini path:".white; puts " #{File.basename $install_PATH}".bold.white
-##---------------------------------------------------##
-puts "\nChecking install directory.".bold.green
+
+puts "Checking install directory.".bold.green
 
 	if not Dir.exists?($install_PATH)
 	 print " The directory does "; puts "not exist.".bold.red
 	 print " #{$install_PATH}"; puts " not found.".bold.yellow
 	 puts  " Install aborted.".bold.red; system("pause"); exit
 	end
-##---------------------------------------------------##
+
 Dir.chdir($install_PATH)
 installed_directory = Dir.pwd # GETS ABSOLUTE PATH E.G mypath => c:\example\mypath
-##---------------------------------------------------##
-puts "\nChecking for previously made system directory.".bold.green
+
+puts "Checking for previously made system directory.".bold.green
 
 	if Dir.exists?(ROOTSHELL)
 	 puts "- Removing previously made system directory.\n".bold.yellow
@@ -273,30 +273,38 @@ puts "\nChecking for previously made system directory.".bold.green
 		 puts "- An error occurred while removing rootShell.".bold.red; system("pause"); exit
 		end
 	end
-##---------------------------------------------------##
-puts "\nCreating rootShell directory.".bold.green	
+
+puts "Creating rootShell directory.".bold.green	
 
  Dir.mkdir(ROOTSHELL); Dir.chdir(ROOTSHELL)
-##---------------------------------------------------## 
+ 
 puts "- Creating readme.txt".bold.yellow
 
-readme = "Thanks for downloading rootShell!\nEmail: cyniclimbu@gmail.com\nNo hatemail pls."
+readme = "Thanks for downloading rootShell!
+I did a lot of work for this project to come to life.
+At the time of writing this, rootShell was still on the works. Not even close to finishing the project.
+1000+ lines of code, Man that's a lot of work for a 16.9 year old kid.\n
+The completion of this project means that I've gotten at least somewhere in 2 years.
+I did a lot of research in 2 years but that does not mean I've been learning Ruby for 2 years.
+I have been researching on Ruby for almost a year now, the rest of it was spent in researching
+-about hacking and a couple of programming languages when I finally found Ruby and felt easy coding in it.\n
+This project wasn't really made so people could use it and be happy about it.
+I made this project to test my skills and you can see it's still not really good.
+Multiple failed projects and & lots of codes were wasted for me to get here.\n
+####### About rootShell from below here :P #######
+rootShell is all about typing commands into the shell just like cmd and getting desired response back.
+Enjoy rootShell!\n
+You can contact me if you want to say anything except hate mails.
+Email: cyniclimbu@gmail.com"
 
 createReadme = File.new("readme.txt","w")
 createReadme.write(readme); createReadme.close
-##---------------------------------------------------##
-puts "- Creating message file.".bold.yellow
-
-message = "Hi.\nHello.\nHallo frand :)\nYou must be smart.\nGood luck at it.\nHaving a good day?\nK den\nhvin' a giggle der m8?"
-
-createMSG = File.new("message","w")
-createMSG.puts(message); createMSG.close
 
 puts "- Creating setting directory.".bold.yellow
 Dir.mkdir("setting"); Dir.chdir("setting")
 Dir.mkdir("path")
-##---------------------------------------------------##
-puts "\nChecking " << "#{WINDOWS}".bold.green << " directory." 
+
+puts "Checking " << "#{WINDOWS}".bold.green << " directory." 
 	
 	if not Dir.exists?(WINDOWS)
 	 puts WINDOWS << " was not found."
@@ -305,7 +313,7 @@ puts "\nChecking " << "#{WINDOWS}".bold.green << " directory."
 	end
 
 Dir.chdir WINDOWS
-##---------------------------------------------------##	
+	
 puts "- Creating directory SeeWhyAnEyeSee on #{WINDOWS}".bold.yellow
 
 	if Dir.exists?("SeeWhyAnEyeSee")
@@ -317,7 +325,7 @@ puts "- Creating directory SeeWhyAnEyeSee on #{WINDOWS}".bold.yellow
 		end
 
 	end
-##---------------------------------------------------##
+
 Dir.mkdir("SeeWhyAnEyeSee"); Dir.chdir("SeeWhyAnEyeSee")
 
 puts "- Writing path to #{WINDOWS + '\SeeWhyAnEyeSee'}"
@@ -330,7 +338,7 @@ createPath.close
 
 puts "\nFinished installing!".bold.cyan; puts "Please restart rootShell to start using it."
 sleep 8; exit
-##---------------------------------------------------##
+
 end #### THIS IS METHOD INSIDE what2do ####
 
 admin? # RUN METHOD admin? TO CHECK IF CURRENT SHELL IS RUNNING AS ADMINISTRATOR
