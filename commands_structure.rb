@@ -18,7 +18,7 @@ def cd_to_dir
 path_dir = $SYSDIRECTORY + '\setting\path' # ..rootshell\setting\path
 
    if $cd2dir.empty?
-	
+	# I'll just leave this empty...
    else
     
 	if Dir.exists?(path_dir)
@@ -72,46 +72,35 @@ def dir
 	  puts "#{list}".bold.cyan << " - " << "File.".bold.green
 	  
 	 else
-	  puts "#{list}".bold.cyan << " - " << "Unknown.".bold.red
+	  puts "#{list}".bold.cyan << " - " << "Unknown type.".bold.red
 	 end
 	end
 end
 
 def dir_extension(command)
-command = command.scan(/\S+ ?/)
- 
-   if command.size >= 4 # 4 => ["size 1","size 2","size 3","size 4"]
-    puts "Bad extension.".bold.red
+extension = command.scan(/\S+ ?/)
 
-   else
-	 extension = command.delete_at(2)
-	 
-     if not extension.include?(".")
-      extension = "." << extension
+ if extension[0] != "dir " || extension.size >= 4 
+  puts "Invalid command or extension.".bold.blue
+  
+ else
+  extension = extension.delete_at(2)
+	
+  if not extension.include?(".")
+   extension = "." << extension
+  end  
+	
+  puts "\nDirectory of ".bold.white << "#{Dir.pwd.capitalize}\n".bold.green
+  puts "Filter: ".bold.green << "#{extension}\n".bold.white
 	  
-	  puts "\nDirectory of ".bold.white << "#{Dir.pwd.capitalize}\n".bold.green
-	  puts "Filter: ".bold.green << "#{extension}\n".bold.white
+  extension = Dir.glob"*#{extension}"
 	  
-	  extension = Dir.glob"*#{extension}"
+  extension.each do |list|
+   puts list.bold.cyan
+  end
 	  
-      extension.each do |list|
-	   puts list.bold.cyan
-	  end
-	  
-	 else 
-	  puts "\nDirectory of ".bold.white << "#{Dir.pwd.capitalize}\n".bold.green
-	  puts "Filter: ".bold.green << "#{extension}".bold.white
-	  extension = Dir.glob"*#{extension}"
-	  
-      extension.each do |list|
-	   puts list.bold.cyan
-	  end
-	  
-     end
-   
-   end
+end
 puts "\n" 
- 
 end
 
 def dir_folder
@@ -395,8 +384,6 @@ def hideContents(command,contents)
    else
     puts "#{command}".bold.cyan << " does not exist.\n".bold.red
    end
-   
-  
   end
 
 end
@@ -416,7 +403,6 @@ def showContents(command,contents)
    system("attrib -s -h \"#{command}\"")  # command => single file/dir name
    
   end
-
 end
 
 #======================== SETTING COMMANDS ========================#
